@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctores RUDECOLOMBIA UDENAR</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #1a5276;
+      --primary-dark: #11364f;
+      --secondary: #28a745;
+      --bg-body: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-main: #2c3e50;
+      --text-muted: #7f8c8d;
+      --border-color: #e2e8f0;
+      --accent: #2980b9;
+      --danger: #dc3545;
+      --warning: #f39c12;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* PANTALLA DE LOGIN */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--bg-body);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 32px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-top: 6px solid var(--primary);
+      text-align: center;
+    }
+
+    .login-card i.logo-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .login-card h2 {
+      margin: 0 0 8px 0;
+      font-size: 1.3rem;
+      color: var(--primary-dark);
+    }
+
+    .login-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .login-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .login-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .login-group input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .login-group input:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-login {
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-login:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .login-error {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* HEADER */
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 10;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stats-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .btn-logout {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .btn-logout:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* LAYOUT PRINCIPAL */
+    .dashboard-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* BARRA LATERAL */
+    .sidebar {
+      width: 320px;
+      background-color: var(--card-bg);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      z-index: 20;
+    }
+
+    .search-box {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      background-color: #fafbfc;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 14px 10px 36px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+      background: white url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%237f8c8d" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 10px center;
+    }
+
+    .records-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .record-item {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .record-item:hover { background-color: #f8fafc; }
+    .record-item.active {
+      background-color: #ebf5fb;
+      border-left: 4px solid var(--primary);
+    }
+
+    .record-item h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: var(--primary-dark); }
+    .record-item p { margin: 2px 0; font-size: 0.8rem; color: var(--text-muted); }
+    .record-item .date-tag { font-size: 0.75rem; color: #95a5a6; margin-top: 4px; display: block; }
+
+    /* ACORDEÓN PRINCIPAL DE EXPEDIENTES ARCHIVADOS */
+    .archived-accordion {
+      border-top: 2px dashed var(--border-color);
+      background: #fcfcfd;
+    }
+
+    .accordion-header {
+      padding: 14px 16px;
+      background-color: #f1f5f9;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .accordion-header:hover { background-color: #e2e8f0; color: var(--text-main); }
+
+    .accordion-body {
+      max-height: 0;
+      overflow-y: auto;
+      transition: max-height 0.3s ease-out;
+      background: #fafafa;
+    }
+
+    .accordion-body.open {
+      max-height: 250px;
+    }
+
+    .record-item.archived {
+      opacity: 0.75;
+      background-color: #fff5f5;
+      border-left: 4px solid var(--danger);
+    }
+
+    .record-item.archived:hover { opacity: 1; }
+
+    .badge-archived {
+      background-color: #fee2e2;
+      color: #991b1b;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    /* SUB-ELEMENTOS ARCHIVADOS DENTRO DEL FORMULARIO */
+    .subitem-archived-container {
+      margin-top: 12px;
+      border: 1px dashed #fca5a5;
+      border-radius: 6px;
+      background-color: #fff8f8;
+      overflow: hidden;
+    }
+
+    .subitem-archived-header {
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #991b1b;
+      background-color: #fee2e2;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .subitem-archived-body {
+      padding: 8px;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .subitem-archived-body.open {
+      display: flex;
+    }
+
+    .row-archived-item {
+      opacity: 0.7;
+      background-color: #ffffff;
+      border: 1px solid #fecaca !important;
+      position: relative;
+    }
+
+    .row-archived-item input {
+      background-color: #fef2f2 !important;
+      color: #7f1d1d !important;
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    .main-content {
+      flex: 1;
+      background-color: var(--bg-body);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .mobile-menu-bar {
+      display: none;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding: 8px 16px;
+    }
+
+    .btn-toggle-sidebar {
+      background: var(--bg-body);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tabs-header {
+      background: white;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      padding: 0 24px;
+      gap: 12px;
+    }
+
+    .tab-btn {
+      padding: 14px 20px;
+      border: none;
+      background: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: none;
+    }
+
+    .tab-content.active { display: block; }
+
+    /* TARJETA DE EXPEDIENTE */
+    .doctor-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .doctor-name { font-size: 1.5rem; color: var(--primary); margin: 0 0 6px 0; font-weight: 700; }
+    .doctor-title { font-size: 1rem; color: var(--text-muted); margin: 0; }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .info-item {
+      background-color: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 6px;
+      border: 1px solid #edf2f7;
+    }
+
+    .info-item label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .info-item span, .info-item a {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      font-weight: 500;
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .observations-box {
+      background-color: #fef9c3;
+      border: 1px solid #fde047;
+      border-left: 5px solid var(--warning);
+      padding: 16px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+    }
+
+    .observations-box h4 { margin: 0 0 6px 0; color: #854d0e; font-size: 0.95rem; }
+    .observations-box p { margin: 0; font-size: 0.9rem; color: #713f12; white-space: pre-line; }
+
+    .section-title {
+      font-size: 1.05rem;
+      color: var(--primary);
+      margin: 24px 0 12px 0;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .data-cards-list { display: flex; flex-direction: column; gap: 10px; }
+    .data-card-item {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .year-badge {
+      background-color: #ebf5fb;
+      color: var(--accent);
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      min-width: 55px;
+      text-align: center;
+    }
+
+    /* FORMULARIO DE EDICIÓN */
+    .edit-form-container { max-width: 800px; margin: 0 auto; }
+    .card-edit {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .form-group-edit { margin-bottom: 16px; }
+    .form-group-edit label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+    .form-group-edit input, .form-group-edit select, .form-group-edit textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .form-group-edit input:focus, .form-group-edit textarea:focus { border-color: var(--primary); }
+
+    .row-grid {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* DOS RENGLONES PARA EVENTOS */
+    .evento-card-row {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .evento-card-row .top-line,
+    .evento-card-row .bottom-line {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .year-input { width: 85px !important; text-align: center; font-weight: bold; }
+    .flex-1 { flex: 1; min-width: 140px; }
+    .flex-2 { flex: 2; min-width: 200px; }
+
+    .btn-add {
+      background-color: var(--secondary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-remove {
+      background-color: #ffffff;
+      color: var(--danger);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-subitem-restore {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .btn-submit-edit {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-submit-edit:hover { background-color: var(--primary-dark); }
+
+    .btn-archive {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-archive:hover { background-color: #fca5a5; }
+
+    .btn-restore {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-restore:hover { background-color: #86efac; }
+
+    /* RESPONSIVE MÓVIL */
+    @media (max-width: 768px) {
+      body { height: auto; overflow: auto; }
+      .dashboard-container { flex-direction: column; height: auto; overflow: visible; }
+      .sidebar {
+        width: 100%;
+        max-height: 300px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .mobile-menu-bar { display: flex; }
+      .sidebar.collapsed { display: none; }
+      .tab-content { padding: 16px; }
+      .tabs-header { padding: 0 12px; }
+      .tab-btn { padding: 12px 10px; font-size: 0.85rem; }
+      .evento-card-row .top-line, .evento-card-row .bottom-line { flex-direction: column; align-items: stretch; }
+      .year-input { width: 100% !important; }
+      .flex-1, .flex-2 { width: 100%; }
+      .card-header-actions { flex-direction: column; align-items: stretch; }
+      .card-header-actions > div { display: flex; flex-wrap: wrap; gap: 8px; }
+    }
+
+    @media print {
+      header, .sidebar, .tabs-header, .mobile-menu-bar, .btn-archive, .btn-restore { display: none !important; }
+      body { height: auto; overflow: visible; background: white; }
+      .main-content { padding: 0; overflow: visible; }
+      .doctor-card { box-shadow: none; border: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PANTALLA DE INICIO DE SESIÓN -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <i class="fa-solid fa-shield-halved logo-icon"></i>
+      <h2>Acceso Administrativo</h2>
+      <p>Base de Datos Doctores — RUDECOLOMBIA UDENAR</p>
+      
+      <form onsubmit="validarLogin(event)">
+        <div class="login-group">
+          <label for="inputPassword">Contraseña de Acceso</label>
+          <input type="password" id="inputPassword" required placeholder="Ingresa la clave">
+        </div>
+        <button type="submit" class="btn-login"><i class="fa-solid fa-lock"></i> Iniciar Sesión</button>
+        <div class="login-error" id="loginError">Contraseña incorrecta. Intente de nuevo.</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <h1>
+      <i class="fa-solid fa-user-graduate"></i>
+      Base de datos — RUDECOLOMBIA UDENAR
+    </h1>
+    <div class="header-actions">
+      <div class="stats-badge" id="totalRecords">Cargando...</div>
+      <button class="btn-logout" onclick="cerrarSesion()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="dashboard-container">
+
+    <!-- BARRA SUPERIOR PARA MÓVIL -->
+    <div class="mobile-menu-bar">
+      <button class="btn-toggle-sidebar" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i> Ver Lista de Doctores
+      </button>
+    </div>
+
+    <!-- BARRA LATERAL (BUSCADOR Y LISTAS) -->
+    <div class="sidebar" id="sidebar">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Buscar por nombre, correo..." oninput="filtrarLista()">
+      </div>
+
+      <!-- LISTA DE ACTIVOS -->
+      <ul class="records-list" id="recordsList"></ul>
+
+      <!-- ACORDEÓN DE ARCHIVADOS / SOFT DELETED -->
+      <div class="archived-accordion">
+        <div class="accordion-header" onclick="toggleAccordion()">
+          <span><i class="fa-solid fa-box-archive"></i> Archivados (<span id="countArchived">0</span>)</span>
+          <i class="fa-solid fa-chevron-down" id="accordionIcon"></i>
+        </div>
+        <div class="accordion-body" id="accordionBody">
+          <ul class="records-list" id="archivedRecordsList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+      
+      <!-- NAVEGACIÓN DE PESTAÑAS -->
+      <div class="tabs-header">
+        <button class="tab-btn active" id="tabBtn1" onclick="cambiarPestana(1)">
+          <i class="fa-solid fa-address-card"></i> Expediente Completo
+        </button>
+        <button class="tab-btn" id="tabBtn2" onclick="cambiarPestana(2)">
+          <i class="fa-solid fa-pen-to-square"></i> Editar Información
+        </button>
+      </div>
+
+      <!-- PESTAÑA 1: CONSULTA DE EXPEDIENTE -->
+      <div class="tab-content active" id="tabContent1">
+        <div id="detailView">
+          <div style="text-align: center; color: var(--text-muted); padding: 40px;">
+            <i class="fa-solid fa-hand-pointer" style="font-size: 2.5rem; margin-bottom: 12px;"></i>
+            <h3>Selecciona un egresado de la lista lateral</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- PESTAÑA 2: FORMULARIO DE EDICIÓN -->
+      <div class="tab-content" id="tabContent2">
+        <div class="edit-form-container">
+          <form id="editDoctorForm" onsubmit="guardarCambiosEdicion(event)">
+            <input type="hidden" id="editKey">
+
+            <!-- Observaciones de Control Interno -->
+            <div class="card-edit" style="background-color: #fefce8; border-color: #fde047;">
+              <div class="form-group-edit">
+                <label style="color: #854d0e;"><i class="fa-solid fa-note-sticky"></i> Observaciones (Correcciones / Solicitudes de Retiro)</label>
+                <textarea id="editObservaciones" data-campo="observaciones" rows="3" placeholder="Notas de control interno, correcciones realizadas..."></textarea>
+              </div>
+            </div>
+
+            <!-- Datos Personales y Laborales -->
+            <div class="card-edit">
+              <div class="form-group-edit">
+                <label>Nombres y apellidos completos <span style="color:red;">*</span></label>
+                <input type="text" id="editNombreCompleto" data-campo="nombreCompleto" required>
+              </div>
+
+              <div class="form-group-edit">
+                <label>Correo electrónico <span style="color:red;">*</span></label>
+                <input type="email" id="editCorreoElectronico" data-campo="correoElectronico">
+              </div>
+
+              <div class="form-group-edit">
+                <label>Teléfono de contacto <span style="color:red;">*</span></label>
+                <input type="tel" id="editTelefonoContacto" data-campo="telefonoContacto">
+              </div>
+
+              <div class="form-group-edit">
+                <label>Lugar de trabajo actual <span style="color:red;">*</span></label>
+                <input type="text" id="editLugarTrabajo" data-campo="lugarTrabajo" required>
+              </div>
+
+              <div class="form-group-edit">
+                <label>Cargo actual <span style="color:red;">*</span></label>
+                <input type="text" id="editCargoActual" data-campo="cargoActual" required>
+              </div>
+
+              <div class="form-group-edit">
+                <label>Departamento o unidad académica</label>
+                <input type="text" id="editDepartamento" data-campo="departamento">
+              </div>
+            </div>
+
+            <!-- Perfiles Académicos -->
+            <div class="card-edit">
+              <div class="form-group-edit">
+                <label>Enlace al perfil de CvLAC (Minciencias)</label>
+                <input type="url" id="editCvlac" data-campo="cvlac">
+              </div>
+
+              <div class="form-group-edit">
+                <label>Enlace o código al perfil ORCID</label>
+                <input type="url" id="editOrcid" data-campo="orcid">
+              </div>
+
+              <div class="form-group-edit">
+                <label>Enlace al perfil de Google Scholar</label>
+                <input type="url" id="editScholar" data-campo="scholar">
+              </div>
+            </div>
+
+            <!-- Reconocimientos -->
+            <div class="card-edit">
+              <label style="font-weight: bold; display: block; margin-bottom: 8px;">Reconocimientos</label>
+              <div id="container-reconocimientos"></div>
+              <button type="button" class="btn-add" onclick="addReconocimientoRow()">+ Agregar Reconocimiento</button>
+              
+              <!-- Acordeón Sub-elementos Archivados -->
+              <div class="subitem-archived-container" id="box-archived-reconocimientos" style="display:none;">
+                <div class="subitem-archived-header" onclick="toggleSubitemAccordion('body-archived-reconocimientos')">
+                  <span><i class="fa-solid fa-box-archive"></i> Reconocimientos Archivados (<span id="count-archived-rec">0</span>)</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="subitem-archived-body" id="body-archived-reconocimientos"></div>
+              </div>
+            </div>
+
+            <!-- Producción Académica -->
+            <div class="card-edit">
+              <label style="font-weight: bold; display: block; margin-bottom: 8px;">Producción Académica</label>
+              <div id="container-produccion"></div>
+              <button type="button" class="btn-add" onclick="addProduccionRow()">+ Agregar Producción</button>
+
+              <!-- Acordeón Sub-elementos Archivados -->
+              <div class="subitem-archived-container" id="box-archived-produccion" style="display:none;">
+                <div class="subitem-archived-header" onclick="toggleSubitemAccordion('body-archived-produccion')">
+                  <span><i class="fa-solid fa-box-archive"></i> Producción Archivada (<span id="count-archived-prod">0</span>)</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="subitem-archived-body" id="body-archived-produccion"></div>
+              </div>
+            </div>
+
+            <!-- Eventos Académicos -->
+            <div class="card-edit">
+              <label style="font-weight: bold; display: block; margin-bottom: 8px;">Participación en Eventos Académicos</label>
+              <div id="container-eventos"></div>
+              <button type="button" class="btn-add" onclick="addEventoRow()">+ Agregar Evento</button>
+
+              <!-- Acordeón Sub-elementos Archivados -->
+              <div class="subitem-archived-container" id="box-archived-eventos" style="display:none;">
+                <div class="subitem-archived-header" onclick="toggleSubitemAccordion('body-archived-eventos')">
+                  <span><i class="fa-solid fa-box-archive"></i> Eventos Archivados (<span id="count-archived-eve">0</span>)</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="subitem-archived-body" id="body-archived-eventos"></div>
+              </div>
+            </div>
+
+            <button type="submit" id="btnSaveEdit" class="btn-submit-edit">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const DB_BASE_URL = "https://encuestadoctorado-ef5c8-default-rtdb.firebaseio.com/";
+    let todashRespuestas = [];
+    let respuestaSeleccionadaKey = null;
+
+    /**
+     * Muestra una notificación emergente discreta tipo toast
+     */
+    function mostrarToast(mensaje, tipo = 'success') {
+      let toastContainer = document.getElementById('toastContainer');
+      if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toastContainer';
+        Object.assign(toastContainer.style, {
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: '9999',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          pointerEvents: 'none'
+        });
+        document.body.appendChild(toastContainer);
+      }
+
+      const toast = document.createElement('div');
+      const bgColores = {
+        success: '#2e7d32',
+        error: '#c62828',
+        info: '#0288d1'
+      };
+
+      Object.assign(toast.style, {
+        backgroundColor: bgColores[tipo] || bgColores.success,
+        color: '#ffffff',
+        padding: '10px 18px',
+        borderRadius: '6px',
+        fontSize: '13px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.18)',
+        opacity: '0',
+        transform: 'translateY(10px)',
+        transition: 'opacity 0.25s ease, transform 0.25s ease',
+        pointerEvents: 'auto',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
+      });
+
+      toast.innerText = mensaje;
+      toastContainer.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+      });
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 250);
+      }, 2200);
+    }
+
+    /**
+     * Guarda un campo individual en Firebase al desenfocar
+     */
+    async function autoGuardarCampo(idRegistro, campo, valor) {
+      if (!idRegistro || !campo) return;
+
+      try {
+        const payload = { [campo]: valor };
+        const response = await fetch(`${DB_BASE_URL}respuestas/${idRegistro}.json`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          const item = todashRespuestas.find(r => r.key === idRegistro);
+          if (item) item[campo] = valor;
+          mostrarToast(`Guardado: ${campo}`, 'success');
+        } else {
+          mostrarToast(`Error al guardar ${campo}`, 'error');
+        }
+      } catch (error) {
+        console.error(`Error al auto-guardar ${campo}:`, error);
+        mostrarToast(`Error de conexión al guardar ${campo}`, 'error');
+      }
+    }
+
+    /**
+     * Serializa y auto-guarda sub-listas (reconocimientos, produccion, eventos)
+     */
+    async function autoGuardarSublista(tipo) {
+      const idRegistro = document.getElementById('editKey').value;
+      if (!idRegistro) return;
+
+      const item = todashRespuestas.find(r => r.key === idRegistro);
+      if (item && item.deleted) return;
+
+      let campo = '';
+      let lineas = [];
+
+      if (tipo === 'rec') {
+        campo = 'reconocimientos';
+        document.querySelectorAll('.row-reconocimiento').forEach(r => {
+          const y = r.querySelector('.rec-year').value.trim();
+          const n = r.querySelector('.rec-nombre').value.trim();
+          const e = r.querySelector('.rec-entidad').value.trim();
+          const isArchived = r.dataset.archived === "true";
+          if (y || n || e) lineas.push(`${y} | ${n} | ${e}${isArchived ? ' | DELETED' : ''}`);
+        });
+      } else if (tipo === 'prod') {
+        campo = 'produccionAcademica';
+        document.querySelectorAll('.row-produccion').forEach(r => {
+          const y = r.querySelector('.prod-year').value.trim();
+          const t = r.querySelector('.prod-titulo').value.trim();
+          const tp = r.querySelector('.prod-tipo').value.trim();
+          const isArchived = r.dataset.archived === "true";
+          if (y || t) lineas.push(`${y} | ${t} | ${tp}${isArchived ? ' | DELETED' : ''}`);
+        });
+      } else if (tipo === 'eve') {
+        campo = 'eventosAcademicos';
+        document.querySelectorAll('.row-evento').forEach(r => {
+          const y = r.querySelector('.eve-year').value.trim();
+          const ev = r.querySelector('.eve-nombre').value.trim();
+          const t = r.querySelector('.eve-titulo').value.trim();
+          const rl = r.querySelector('.eve-rol').value.trim();
+          const isArchived = r.dataset.archived === "true";
+          if (y || ev || t) lineas.push(`${y} | ${ev} | ${t} | ${rl}${isArchived ? ' | DELETED' : ''}`);
+        });
+      }
+
+      await autoGuardarCampo(idRegistro, campo, lineas.join('\n'));
+    }
+
+    /**
+     * Vincula el listener onblur a los inputs configurados
+     */
+    function habilitarAutoGuardadoOnBlur(idRegistro, esArchivado) {
+      const inputs = document.querySelectorAll('#editDoctorForm input[data-campo], #editDoctorForm textarea[data-campo]');
+
+      inputs.forEach(input => {
+        input.disabled = esArchivado;
+        if (esArchivado) return;
+
+        // Limpiar listeners previos clonando
+        const nuevoInput = input.cloneNode(true);
+        input.parentNode.replaceChild(nuevoInput, input);
+
+        nuevoInput.addEventListener('focus', () => {
+          nuevoInput.dataset.valorOriginal = nuevoInput.value;
+        });
+
+        nuevoInput.addEventListener('blur', async () => {
+          const campo = nuevoInput.getAttribute('data-campo');
+          const nuevoValor = nuevoInput.value.trim();
+          const valorPrevio = nuevoInput.dataset.valorOriginal || '';
+
+          if (nuevoValor !== valorPrevio) {
+            nuevoInput.dataset.valorOriginal = nuevoValor;
+            await autoGuardarCampo(idRegistro, campo, nuevoValor);
+          }
+        });
+      });
+    }
+
+    // --- VERIFICAR SESIÓN ---
+    function verificarSesion() {
+      const expiry = localStorage.getItem('adminSessionExpiry');
+      if (expiry && new Date().getTime() < parseInt(expiry)) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        cargarDatos();
+      } else {
+        document.getElementById('loginOverlay').style.display = 'flex';
+      }
+    }
+
+    async function validarLogin(e) {
+      e.preventDefault();
+      const claveInput = document.getElementById('inputPassword').value.trim();
+      const loginError = document.getElementById('loginError');
+
+      try {
+        const res = await fetch(`${DB_BASE_URL}adminConfig/passwordHash.json`);
+        const claveGuardada = await res.json();
+
+        if (claveGuardada && claveInput === claveGuardada.trim()) {
+          const tiempoExpiracion = new Date().getTime() + (24 * 60 * 60 * 1000);
+          localStorage.setItem('adminSessionExpiry', tiempoExpiracion.toString());
+          document.getElementById('loginOverlay').style.display = 'none';
+          loginError.style.display = 'none';
+          cargarDatos();
+        } else {
+          loginError.style.display = 'block';
+        }
+      } catch (err) {
+        console.error("Error al validar clave:", err);
+        mostrarToast("Error de conexión al verificar credenciales.", 'error');
+      }
+    }
+
+    function cerrarSesion() {
+      localStorage.removeItem('adminSessionExpiry');
+      location.reload();
+    }
+
+    // --- MÓVIL Y ACORDEÓN PRINCIPAL ---
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('collapsed');
+    }
+
+    function toggleAccordion() {
+      const body = document.getElementById('accordionBody');
+      const icon = document.getElementById('accordionIcon');
+      body.classList.toggle('open');
+      icon.classList.toggle('fa-chevron-up');
+      icon.classList.toggle('fa-chevron-down');
+    }
+
+    function toggleSubitemAccordion(bodyId) {
+      const el = document.getElementById(bodyId);
+      el.classList.toggle('open');
+    }
+
+    function cambiarPestana(numero) {
+      document.getElementById('tabBtn1').classList.toggle('active', numero === 1);
+      document.getElementById('tabBtn2').classList.toggle('active', numero === 2);
+      document.getElementById('tabContent1').classList.toggle('active', numero === 1);
+      document.getElementById('tabContent2').classList.toggle('active', numero === 2);
+    }
+
+    // --- CARGAR DATOS DESDE EL SERVIDOR ---
+    async function cargarDatos() {
+      try {
+        const res = await fetch(`${DB_BASE_URL}respuestas.json`);
+        const data = await res.json();
+        
+        todashRespuestas = [];
+        if (data) {
+          Object.keys(data).forEach(key => {
+            todashRespuestas.push({ key, ...data[key] });
+          });
+          todashRespuestas.sort((a, b) => new Date(b.fechaEnvio || 0) - new Date(a.fechaEnvio || 0));
+        }
+
+        const activos = todashRespuestas.filter(r => !r.deleted);
+        document.getElementById('totalRecords').innerText = `${activos.length} Activos`;
+        
+        filtrarLista();
+
+        if (todashRespuestas.length > 0) {
+          if (!respuestaSeleccionadaKey) {
+            const primeroActivo = activos[0] || todashRespuestas[0];
+            seleccionarRegistro(primeroActivo.key);
+          } else {
+            seleccionarRegistro(respuestaSeleccionadaKey);
+          }
+        }
+      } catch (err) {
+        console.error("Error al cargar datos:", err);
+      }
+    }
+
+    function renderizarLista(activos, archivados) {
+      const ulActivos = document.getElementById('recordsList');
+      const ulArchivados = document.getElementById('archivedRecordsList');
+      
+      ulActivos.innerHTML = '';
+      ulArchivados.innerHTML = '';
+
+      document.getElementById('countArchived').innerText = archivados.length;
+
+      if (activos.length === 0) {
+        ulActivos.innerHTML = `<li style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">Sin registros activos.</li>`;
+      } else {
+        activos.forEach(item => ulActivos.appendChild(crearItemLI(item, false)));
+      }
+
+      if (archivados.length === 0) {
+        ulArchivados.innerHTML = `<li style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 0.8rem;">No hay elementos archivados.</li>`;
+      } else {
+        archivados.forEach(item => ulArchivados.appendChild(crearItemLI(item, true)));
+      }
+    }
+
+    function crearItemLI(item, esArchivado) {
+      const li = document.createElement('li');
+      li.className = `record-item ${item.key === respuestaSeleccionadaKey ? 'active' : ''} ${esArchivado ? 'archived' : ''}`;
+      li.onclick = () => seleccionarRegistro(item.key);
+
+      const fechaStr = item.fechaEnvio ? new Date(item.fechaEnvio).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' }) : '';
+
+      li.innerHTML = `
+        <h4>${item.nombreCompleto || 'Sin nombre'}</h4>
+        <p><i class="fa-solid fa-briefcase"></i> ${item.lugarTrabajo || 'No especificado'}</p>
+        <p><i class="fa-solid fa-envelope"></i> ${item.correoElectronico || 'Sin correo'}</p>
+        <span class="date-tag"><i class="fa-regular fa-clock"></i> ${fechaStr}</span>
+        ${esArchivado ? `<span class="badge-archived"><i class="fa-solid fa-box-archive"></i> Archivado / Inactivo</span>` : ''}
+      `;
+      return li;
+    }
+
+    function filtrarLista() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      
+      const filtrados = todashRespuestas.filter(item => {
+        return (item.nombreCompleto || '').toLowerCase().includes(q) ||
+               (item.correoElectronico || '').toLowerCase().includes(q) ||
+               (item.lugarTrabajo || '').toLowerCase().includes(q);
+      });
+
+      const activos = filtrados.filter(r => !r.deleted);
+      const archivados = filtrados.filter(r => r.deleted);
+
+      renderizarLista(activos, archivados);
+    }
+
+    // --- SELECCIONAR Y VISUALIZAR ---
+    function seleccionarRegistro(key) {
+      respuestaSeleccionadaKey = key;
+      const item = todashRespuestas.find(r => r.key === key);
+      if (!item) return;
+
+      filtrarLista();
+
+      const detailView = document.getElementById('detailView');
+      const esArchivado = !!item.deleted;
+
+      detailView.innerHTML = `
+        <div class="doctor-card">
+          <div class="card-header-actions">
+            <div>
+              <h2 class="doctor-name">${item.nombreCompleto || 'Doctor(a) Sin Nombre'}</h2>
+              <p class="doctor-title"><i class="fa-solid fa-user-tie"></i> ${item.cargoActual || 'Cargo no especificado'} ${item.departamento ? '— ' + item.departamento : ''}</p>
+              ${esArchivado ? `<span class="badge-archived" style="font-size:0.85rem; padding: 4px 8px; margin-top:8px;"><i class="fa-solid fa-lock"></i> REGISTRO ARCHIVADO (SOLO LECTURA)</span>` : ''}
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn-action" onclick="window.print()" style="padding: 8px 14px; cursor:pointer;">
+                <i class="fa-solid fa-print"></i> Imprimir
+              </button>
+              ${esArchivado ? `
+                <button class="btn-restore" onclick="restaurarRegistro('${item.key}')">
+                  <i class="fa-solid fa-rotate-left"></i> Restaurar Registro
+                </button>
+              ` : `
+                <button class="btn-archive" onclick="softDeleteRegistro('${item.key}')">
+                  <i class="fa-solid fa-box-archive"></i> Archivar Expediente
+                </button>
+              `}
+            </div>
+          </div>
+
+          ${item.observaciones ? `
+            <div class="observations-box">
+              <h4><i class="fa-solid fa-triangle-exclamation"></i> Observaciones de Control Interno</h4>
+              <p>${item.observaciones}</p>
+            </div>
+          ` : ''}
+
+          <div class="info-grid">
+            <div class="info-item"><label>Correo Electrónico</label><span>${item.correoElectronico || '—'}</span></div>
+            <div class="info-item"><label>Teléfono</label><span>${item.telefonoContacto || '—'}</span></div>
+            <div class="info-item"><label>Lugar de Trabajo</label><span>${item.lugarTrabajo || '—'}</span></div>
+            <div class="info-item"><label>Departamento</label><span>${item.departamento || '—'}</span></div>
+          </div>
+
+          <div class="section-title"><i class="fa-solid fa-globe"></i> Perfiles Académicos</div>
+          <div class="info-grid">
+            <div class="info-item"><label>CvLAC</label><span>${item.cvlac ? `<a href="${item.cvlac}" target="_blank">Ver CvLAC</a>` : '—'}</span></div>
+            <div class="info-item"><label>ORCID</label><span>${item.orcid ? `<a href="${item.orcid}" target="_blank">Ver ORCID</a>` : '—'}</span></div>
+            <div class="info-item"><label>Google Scholar</label><span>${item.scholar ? `<a href="${item.scholar}" target="_blank">Ver Scholar</a>` : '—'}</span></div>
+          </div>
+
+          <div class="section-title"><i class="fa-solid fa-award"></i> Reconocimientos</div>
+          <div class="data-cards-list">${formatearEstructurado(item.reconocimientos, 3)}</div>
+
+          <div class="section-title"><i class="fa-solid fa-book-bookmark"></i> Producción Académica</div>
+          <div class="data-cards-list">${formatearEstructurado(item.produccionAcademica, 3)}</div>
+
+          <div class="section-title"><i class="fa-solid fa-chalkboard-user"></i> Eventos Académicos</div>
+          <div class="data-cards-list">${formatearEstructurado(item.eventosAcademicos, 4)}</div>
+        </div>
+      `;
+
+      // Cargar en formulario de edición
+      document.getElementById('editKey').value = item.key;
+      document.getElementById('editNombreCompleto').value = item.nombreCompleto || '';
+      document.getElementById('editCorreoElectronico').value = item.correoElectronico || '';
+      document.getElementById('editTelefonoContacto').value = item.telefonoContacto || '';
+      document.getElementById('editLugarTrabajo').value = item.lugarTrabajo || '';
+      document.getElementById('editCargoActual').value = item.cargoActual || '';
+      document.getElementById('editDepartamento').value = item.departamento || '';
+      document.getElementById('editCvlac').value = item.cvlac || '';
+      document.getElementById('editOrcid').value = item.orcid || '';
+      document.getElementById('editScholar').value = item.scholar || '';
+      document.getElementById('editObservaciones').value = item.observaciones || '';
+
+      const btnSave = document.getElementById('btnSaveEdit');
+      btnSave.disabled = esArchivado;
+      btnSave.style.opacity = esArchivado ? '0.5' : '1';
+      btnSave.innerText = esArchivado ? 'Registro Archivado (No editable)' : 'Guardar Cambios';
+
+      cargarFilasReconocimientos(item.reconocimientos);
+      cargarFilasProduccion(item.produccionAcademica);
+      cargarFilasEventos(item.eventosAcademicos);
+
+      habilitarAutoGuardadoOnBlur(item.key, esArchivado);
+    }
+
+    function formatearEstructurado(textoPlano, cols) {
+      if (!textoPlano || !textoPlano.trim()) return `<p style="font-size:0.85rem; color:var(--text-muted); font-style:italic;">Sin información registrada.</p>`;
+      const lineas = textoPlano.split('\n').filter(l => l.trim() !== '' && !l.includes('| DELETED'));
+      if (lineas.length === 0) return `<p style="font-size:0.85rem; color:var(--text-muted); font-style:italic;">Sin información registrada.</p>`;
+
+      return lineas.map(linea => {
+        const p = linea.split('|').map(x => x.trim());
+        const ano = p[0] || 'S/A';
+        const tit = cols === 4 ? (p[2] || p[1] || 'Sin título') : (p[1] || 'Sin título');
+        const sub = cols === 4 ? `Evento: ${p[1] || '—'} | Rol: ${p[3] || '—'}` : (p[2] ? `Entidad/Tipo: ${p[2]}` : '');
+        return `
+          <div class="data-card-item">
+            <div class="year-badge">${ano}</div>
+            <div>
+              <h5 style="margin:0 0 2px 0; font-size:0.9rem;">${tit}</h5>
+              <p style="margin:0; font-size:0.8rem; color:var(--text-muted);">${sub}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- MANEJO DE SUB-ELEMENTOS ---
+
+    // 1. RECONOCIMIENTOS
+    function addReconocimientoRow(year = '', nombre = '', entidad = '', isArchived = false) {
+      const activeContainer = document.getElementById('container-reconocimientos');
+      const archivedContainer = document.getElementById('body-archived-reconocimientos');
+
+      const row = document.createElement('div');
+      row.className = `row-grid row-reconocimiento ${isArchived ? 'row-archived-item' : ''}`;
+      row.dataset.archived = isArchived ? "true" : "false";
+
+      row.innerHTML = `
+        <input type="text" maxlength="4" placeholder="Año" class="year-input rec-year" value="${year}" onblur="autoGuardarSublista('rec')">
+        <input type="text" placeholder="Nombre del reconocimiento" class="flex-2 rec-nombre" value="${nombre}" onblur="autoGuardarSublista('rec')">
+        <input type="text" placeholder="Entidad otorgante" class="flex-2 rec-entidad" value="${entidad}" onblur="autoGuardarSublista('rec')">
+        ${isArchived ? `
+          <button type="button" class="btn-subitem-restore" onclick="restaurarSubitem(this, 'rec')"><i class="fa-solid fa-rotate-left"></i> Restaurar</button>
+        ` : `
+          <button type="button" class="btn-remove" onclick="softDeleteSubitem(this, 'rec')" title="Archivar este reconocimiento">✕</button>
+        `}
+      `;
+
+      if (isArchived) {
+        archivedContainer.appendChild(row);
+      } else {
+        activeContainer.appendChild(row);
+      }
+      actualizarContadoresSubitems('rec');
+    }
+
+    // 2. PRODUCCIÓN
+    function addProduccionRow(year = '', titulo = '', tipo = 'Artículo', isArchived = false) {
+      const activeContainer = document.getElementById('container-produccion');
+      const archivedContainer = document.getElementById('body-archived-produccion');
+
+      const row = document.createElement('div');
+      row.className = `row-grid row-produccion ${isArchived ? 'row-archived-item' : ''}`;
+      row.dataset.archived = isArchived ? "true" : "false";
+
+      row.innerHTML = `
+        <input type="text" maxlength="4" placeholder="Año" class="year-input prod-year" value="${year}" onblur="autoGuardarSublista('prod')">
+        <input type="text" placeholder="Título de la obra" class="flex-2 prod-titulo" value="${titulo}" onblur="autoGuardarSublista('prod')">
+        <input type="text" placeholder="Tipo (Artículo, Libro, etc.)" class="flex-1 prod-tipo" value="${tipo}" onblur="autoGuardarSublista('prod')">
+        ${isArchived ? `
+          <button type="button" class="btn-subitem-restore" onclick="restaurarSubitem(this, 'prod')"><i class="fa-solid fa-rotate-left"></i> Restaurar</button>
+        ` : `
+          <button type="button" class="btn-remove" onclick="softDeleteSubitem(this, 'prod')" title="Archivar esta producción">✕</button>
+        `}
+      `;
+
+      if (isArchived) {
+        archivedContainer.appendChild(row);
+      } else {
+        activeContainer.appendChild(row);
+      }
+      actualizarContadoresSubitems('prod');
+    }
+
+    // 3. EVENTOS
+    function addEventoRow(year = '', evento = '', titulo = '', rol = 'Ponente', isArchived = false) {
+      const activeContainer = document.getElementById('container-eventos');
+      const archivedContainer = document.getElementById('body-archived-eventos');
+
+      const row = document.createElement('div');
+      row.className = `evento-card-row row-evento ${isArchived ? 'row-archived-item' : ''}`;
+      row.dataset.archived = isArchived ? "true" : "false";
+
+      row.innerHTML = `
+        <div class="top-line">
+          <input type="text" maxlength="4" placeholder="Año" class="year-input eve-year" value="${year}" onblur="autoGuardarSublista('eve')">
+          <input type="text" placeholder="Nombre del evento" class="flex-1 eve-nombre" value="${evento}" style="font-weight: 500;" onblur="autoGuardarSublista('eve')">
+          ${isArchived ? `
+            <button type="button" class="btn-subitem-restore" onclick="restaurarSubitem(this, 'eve')"><i class="fa-solid fa-rotate-left"></i> Restaurar</button>
+          ` : `
+            <button type="button" class="btn-remove" onclick="softDeleteSubitem(this, 'eve')" title="Archivar este evento">✕</button>
+          `}
+        </div>
+        <div class="bottom-line">
+          <input type="text" placeholder="Título de la ponencia / trabajo" class="flex-2 eve-titulo" value="${titulo}" onblur="autoGuardarSublista('eve')">
+          <input type="text" placeholder="Rol (Ej: Ponente)" class="flex-1 eve-rol" value="${rol}" style="max-width: 180px;" onblur="autoGuardarSublista('eve')">
+        </div>
+      `;
+
+      if (isArchived) {
+        archivedContainer.appendChild(row);
+      } else {
+        activeContainer.appendChild(row);
+      }
+      actualizarContadoresSubitems('eve');
+    }
+
+    // ACCIONES DE SOFT DELETE Y RESTAURACIÓN EN SUB-ELEMENTOS
+    function softDeleteSubitem(btnElement, tipo) {
+      const row = btnElement.closest('.row-grid, .evento-card-row');
+      row.dataset.archived = "true";
+      row.classList.add('row-archived-item');
+
+      if (tipo === 'eve') {
+        const topLine = row.querySelector('.top-line');
+        btnElement.remove();
+        const resBtn = document.createElement('button');
+        resBtn.type = 'button';
+        resBtn.className = 'btn-subitem-restore';
+        resBtn.onclick = function() { restaurarSubitem(this, 'eve'); };
+        resBtn.innerHTML = `<i class="fa-solid fa-rotate-left"></i> Restaurar`;
+        topLine.appendChild(resBtn);
+      } else {
+        btnElement.outerHTML = `<button type="button" class="btn-subitem-restore" onclick="restaurarSubitem(this, '${tipo}')"><i class="fa-solid fa-rotate-left"></i> Restaurar</button>`;
+      }
+
+      const archivedBody = document.getElementById(`body-archived-${tipo === 'rec' ? 'reconocimientos' : tipo === 'prod' ? 'produccion' : 'eventos'}`);
+      archivedBody.appendChild(row);
+      actualizarContadoresSubitems(tipo);
+      autoGuardarSublista(tipo);
+    }
+
+    function restaurarSubitem(btnElement, tipo) {
+      const row = btnElement.closest('.row-grid, .evento-card-row');
+      row.dataset.archived = "false";
+      row.classList.remove('row-archived-item');
+
+      if (tipo === 'eve') {
+        const topLine = row.querySelector('.top-line');
+        btnElement.remove();
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'btn-remove';
+        delBtn.onclick = function() { softDeleteSubitem(this, 'eve'); };
+        delBtn.title = 'Archivar este evento';
+        delBtn.innerHTML = `✕`;
+        topLine.appendChild(delBtn);
+      } else {
+        btnElement.outerHTML = `<button type="button" class="btn-remove" onclick="softDeleteSubitem(this, '${tipo}')" title="Archivar">✕</button>`;
+      }
+
+      const activeBody = document.getElementById(`container-${tipo === 'rec' ? 'reconocimientos' : tipo === 'prod' ? 'produccion' : 'eventos'}`);
+      activeBody.appendChild(row);
+      actualizarContadoresSubitems(tipo);
+      autoGuardarSublista(tipo);
+    }
+
+    function actualizarContadoresSubitems(tipo) {
+      const keyMap = { rec: ['reconocimientos', 'rec'], prod: ['produccion', 'prod'], eve: ['eventos', 'eve'] };
+      const [nombreBox, sufijo] = keyMap[tipo];
+      const archivedBody = document.getElementById(`body-archived-${nombreBox}`);
+      const boxContainer = document.getElementById(`box-archived-${nombreBox}`);
+      const countSpan = document.getElementById(`count-archived-${sufijo}`);
+
+      const totalArchived = archivedBody.querySelectorAll('.row-archived-item').length;
+      countSpan.innerText = totalArchived;
+      boxContainer.style.display = totalArchived > 0 ? 'block' : 'none';
+    }
+
+    function cargarFilasReconocimientos(texto) {
+      document.getElementById('container-reconocimientos').innerHTML = '';
+      document.getElementById('body-archived-reconocimientos').innerHTML = '';
+      if (!texto || !texto.trim()) { addReconocimientoRow(); return; }
+
+      texto.split('\n').forEach(linea => {
+        const p = linea.split('|').map(x => x.trim());
+        const isArchived = p[3] === 'DELETED';
+        if (p[0] || p[1] || p[2]) addReconocimientoRow(p[0], p[1], p[2], isArchived);
+      });
+    }
+
+    function cargarFilasProduccion(texto) {
+      document.getElementById('container-produccion').innerHTML = '';
+      document.getElementById('body-archived-produccion').innerHTML = '';
+      if (!texto || !texto.trim()) { addProduccionRow(); return; }
+
+      texto.split('\n').forEach(linea => {
+        const p = linea.split('|').map(x => x.trim());
+        const isArchived = p[3] === 'DELETED';
+        if (p[0] || p[1] || p[2]) addProduccionRow(p[0], p[1], p[2], isArchived);
+      });
+    }
+
+    function cargarFilasEventos(texto) {
+      document.getElementById('container-eventos').innerHTML = '';
+      document.getElementById('body-archived-eventos').innerHTML = '';
+      if (!texto || !texto.trim()) { addEventoRow(); return; }
+
+      texto.split('\n').forEach(linea => {
+        const p = linea.split('|').map(x => x.trim());
+        const isArchived = p[4] === 'DELETED';
+        if (p[0] || p[1] || p[2] || p[3]) addEventoRow(p[0], p[1], p[2], p[3], isArchived);
+      });
+    }
+
+    // --- GUARDAR CAMBIOS COMPLETO (BOTÓN MANUAL) ---
+    async function guardarCambiosEdicion(e) {
+      e.preventDefault();
+      const key = document.getElementById('editKey').value;
+      if (!key) return;
+
+      const btnSave = document.getElementById('btnSaveEdit');
+      btnSave.disabled = true;
+      btnSave.innerText = 'Guardando cambios...';
+
+      const recLines = [];
+      document.querySelectorAll('.row-reconocimiento').forEach(r => {
+        const y = r.querySelector('.rec-year').value.trim();
+        const n = r.querySelector('.rec-nombre').value.trim();
+        const e = r.querySelector('.rec-entidad').value.trim();
+        const isArchived = r.dataset.archived === "true";
+        if (y || n || e) recLines.push(`${y} | ${n} | ${e}${isArchived ? ' | DELETED' : ''}`);
+      });
+
+      const prodLines = [];
+      document.querySelectorAll('.row-produccion').forEach(r => {
+        const y = r.querySelector('.prod-year').value.trim();
+        const t = r.querySelector('.prod-titulo').value.trim();
+        const tp = r.querySelector('.prod-tipo').value.trim();
+        const isArchived = r.dataset.archived === "true";
+        if (y || t) prodLines.push(`${y} | ${t} | ${tp}${isArchived ? ' | DELETED' : ''}`);
+      });
+
+      const eveLines = [];
+      document.querySelectorAll('.row-evento').forEach(r => {
+        const y = r.querySelector('.eve-year').value.trim();
+        const ev = r.querySelector('.eve-nombre').value.trim();
+        const t = r.querySelector('.eve-titulo').value.trim();
+        const rl = r.querySelector('.eve-rol').value.trim();
+        const isArchived = r.dataset.archived === "true";
+        if (y || ev || t) eveLines.push(`${y} | ${ev} | ${t} | ${rl}${isArchived ? ' | DELETED' : ''}`);
+      });
+
+      const payload = {
+        nombreCompleto: document.getElementById('editNombreCompleto').value.trim(),
+        correoElectronico: document.getElementById('editCorreoElectronico').value.trim(),
+        telefonoContacto: document.getElementById('editTelefonoContacto').value.trim(),
+        lugarTrabajo: document.getElementById('editLugarTrabajo').value.trim(),
+        cargoActual: document.getElementById('editCargoActual').value.trim(),
+        departamento: document.getElementById('editDepartamento').value.trim(),
+        cvlac: document.getElementById('editCvlac').value.trim(),
+        orcid: document.getElementById('editOrcid').value.trim(),
+        scholar: document.getElementById('editScholar').value.trim(),
+        observaciones: document.getElementById('editObservaciones').value.trim(),
+        reconocimientos: recLines.join('\n'),
+        produccionAcademica: prodLines.join('\n'),
+        eventosAcademicos: eveLines.join('\n')
+      };
+
+      try {
+        const response = await fetch(`${DB_BASE_URL}respuestas/${key}.json`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          mostrarToast("Registro actualizado con éxito.", 'success');
+          await cargarDatos();
+          cambiarPestana(1);
+        } else {
+          mostrarToast("Error al actualizar el registro.", 'error');
+        }
+      } catch (err) {
+        console.error("Error guardando cambios:", err);
+        mostrarToast("Ocurrió un error de red al guardar los cambios.", 'error');
+      } finally {
+        btnSave.disabled = false;
+        btnSave.innerText = 'Guardar Cambios';
+      }
+    }
+
+    // --- ACCIONES DE SOFT DELETE GLOBAL ---
+    async function softDeleteRegistro(key) {
+      if (!confirm("¿Deseas archivar este expediente? No se borrará definitivamente, estará disponible en la sección inferior de archivados.")) return;
+
+      try {
+        const response = await fetch(`${DB_BASE_URL}respuestas/${key}.json`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ deleted: true, deletedAt: new Date().toISOString() })
+        });
+
+        if (response.ok) {
+          mostrarToast("Expediente archivado correctamente.", 'info');
+          await cargarDatos();
+        } else {
+          mostrarToast("No se pudo archivar el expediente.", 'error');
+        }
+      } catch (err) {
+        console.error("Error al archivar:", err);
+        mostrarToast("Error de red al archivar el expediente.", 'error');
+      }
+    }
+
+    async function restaurarRegistro(key) {
+      if (!confirm("¿Deseas restaurar este expediente a la lista activa?")) return;
+
+      try {
+        const response = await fetch(`${DB_BASE_URL}respuestas/${key}.json`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ deleted: false, restoredAt: new Date().toISOString() })
+        });
+
+        if (response.ok) {
+          mostrarToast("Expediente restaurado con éxito.", 'success');
+          await cargarDatos();
+        } else {
+          mostrarToast("No se pudo restaurar el expediente.", 'error');
+        }
+      } catch (err) {
+        console.error("Error al restaurar:", err);
+        mostrarToast("Error de red al restaurar el expediente.", 'error');
+      }
+    }
+
+    window.onload = function() {
+      verificarSesion();
+    };
+  </script>
+</body>
+</html>
